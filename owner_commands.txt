@@ -1,0 +1,15 @@
+ban
+banlist
+broadcast
+init
+maintenance
+restart
+serverinfo
+setbio
+setlanguage
+setlanguage
+setname
+setowner
+setprefix
+shutdown
+unban

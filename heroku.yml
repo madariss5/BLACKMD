@@ -1,0 +1,5 @@
+build:
+  docker:
+    web: Dockerfile
+run:
+  web: YOUTUBE_DL_SKIP_DOWNLOAD=1 YOUTUBE_DL_SKIP_PYTHON_CHECK=1 node heroku-session-repair.js && node src/index.js
