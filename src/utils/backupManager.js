@@ -1,0 +1,151 @@
+/**
+ * Single Backup Manager for WhatsApp Session Credentials
+ * Heavily modified to only keep a single backup 
+ */
+
+const fs = require('fs');
+const path = require('path');
+const logger = require('./logger');
+const crypto = require('crypto');
+const { execSync } = require('child_process');
+
+// Generate a random session ID to identify this session
+const SESSION_ID = crypto.randomBytes(4).toString('hex');
+logger.info(`Session ID: ${SESSION_ID}`);
+
+// Max backups limited to 1
+const MAX_BACKUPS = 1;
+
+/**
+ * Create a backup of the current WhatsApp session
+ * @param {Object} creds - The credentials object from Baileys
+ * @returns {Promise<boolean>} - Success status
+ */
+async function createBackup(creds) {
+    try {
+        // Single backup directory
+        const backupDir = path.join(process.cwd(), 'auth_info_baileys_backup');
+        
+        // Ensure the backup directory exists
+        if (!fs.existsSync(backupDir)) {
+            fs.mkdirSync(backupDir, { recursive: true });
+        }
+        
+        // Remove any previous backups
+        const backupFiles = fs.readdirSync(backupDir);
+        for (const file of backupFiles) {
+            try {
+                fs.unlinkSync(path.join(backupDir, file));
+            } catch (error) {
+                logger.warn(`Failed to remove old backup file: ${file}`);
+            }
+        }
+        
+        // Write the new credentials
+        const credsPath = path.join(backupDir, 'creds.json');
+        fs.writeFileSync(credsPath, JSON.stringify(creds, null, 2));
+        
+        logger.info(`Created single backup at: ${backupDir}`);
+        
+        // Remove other backup folders
+        try {
+            const output = execSync('find . -maxdepth 1 -type d -name "auth_info_baileys_backup_*" -exec rm -rf {} \\;', { stdio: 'pipe' });
+            logger.info('Removed other backup folders');
+        } catch (error) {
+            logger.warn('No other backup folders to remove');
+        }
+        
+        return true;
+    } catch (error) {
+        logger.error(`Failed to create backup: ${error.message}`);
+        return false;
+    }
+}
+
+/**
+ * Calculate a checksum for data verification
+ * @param {string} data - Data to hash
+ * @returns {string} - SHA-256 hash
+ */
+function calculateChecksum(data) {
+    return crypto.createHash('sha256').update(data).digest('hex');
+}
+
+/**
+ * Clean up old backup files to prevent excessive storage use
+ * Modified to only keep one backup
+ */
+async function cleanupOldBackups() {
+    try {
+        logger.info('Cleaning up backup directories...');
+        
+        // Use exec for faster deletion
+        execSync('find . -maxdepth 1 -type d -name "auth_info_baileys_backup_*" -exec rm -rf {} \\;', { stdio: 'pipe' });
+        
+        logger.info('Backup cleanup complete - kept only one backup');
+        return true;
+    } catch (error) {
+        logger.error(`Error cleaning up backups: ${error.message}`);
+        return false;
+    }
+}
+
+/**
+ * Restore credentials from available backups
+ * @returns {Promise<Object|null>} - Restored credentials or null if not found
+ */
+async function restoreBackup() {
+    try {
+        // Primary backup location
+        const backupDir = path.join(process.cwd(), 'auth_info_baileys_backup');
+        const credsPath = path.join(backupDir, 'creds.json');
+        
+        if (fs.existsSync(credsPath)) {
+            const data = fs.readFileSync(credsPath, 'utf8');
+            return JSON.parse(data);
+        }
+        
+        // No backup found
+        logger.warn('No backups found to restore');
+        return null;
+    } catch (error) {
+        logger.error(`Failed to restore backup: ${error.message}`);
+        return null;
+    }
+}
+
+/**
+ * Set up automatic scheduled backups
+ * @param {Function} getCredsFunction - Function that returns current credentials
+ */
+function setupScheduledBackups(getCredsFunction) {
+    if (!getCredsFunction || typeof getCredsFunction !== 'function') {
+        logger.error('Invalid credentials function provided for scheduled backups');
+        return false;
+    }
+    
+    // Create one backup at the start of the session instead of a recurring schedule
+    // Using immediate function execution instead of top-level await
+    (async () => {
+        try {
+            const creds = await getCredsFunction();
+            if (creds) {
+                await createBackup(creds);
+                logger.info('Initial session backup completed successfully');
+            }
+        } catch (error) {
+            logger.error('Initial session backup failed:', error);
+        }
+    })();
+    
+    logger.info('Created single backup for this session (no recurring backups)');
+    return true;
+}
+
+module.exports = {
+    createBackup,
+    restoreBackup,
+    setupScheduledBackups,
+    cleanupOldBackups,
+    SESSION_ID
+};
