@@ -1,0 +1,433 @@
+{
+  "category": "fun",
+  "commands": [
+    {
+      "name": "8ball",
+      "description": "Ask the magic 8 ball a question",
+      "usage": ".8ball [question]",
+      "example": ".8ball Will I win the lottery?",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "dice",
+      "description": "Roll a dice with custom sides",
+      "usage": ".dice [sides]",
+      "example": ".dice 20",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "fortune",
+      "description": "Get your fortune told",
+      "usage": ".fortune",
+      "example": ".fortune",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "meme",
+      "description": "Get a random meme",
+      "usage": ".meme",
+      "example": ".meme",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "trivia",
+      "description": "Get a random trivia question",
+      "usage": ".trivia",
+      "example": ".trivia",
+      "cooldown": 10,
+      "permissions": ["user"]
+    },
+    {
+      "name": "riddle",
+      "description": "Get a random riddle",
+      "usage": ".riddle",
+      "example": ".riddle",
+      "cooldown": 10,
+      "permissions": ["user"]
+    },
+    {
+      "name": "quote",
+      "description": "Get a random quote",
+      "usage": ".quote",
+      "example": ".quote",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "fact",
+      "description": "Get a random fun fact",
+      "usage": ".fact",
+      "example": ".fact",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "shuffle",
+      "description": "Shuffle the given text",
+      "usage": ".shuffle [text]",
+      "example": ".shuffle hello world",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "reverse",
+      "description": "Reverse the given text",
+      "usage": ".reverse [text]",
+      "example": ".reverse hello",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "emojify",
+      "description": "Convert text to emoji",
+      "usage": ".emojify [text]",
+      "example": ".emojify I love cats",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "mock",
+      "description": "MoCk ThE gIvEn TeXt",
+      "usage": ".mock [text]",
+      "example": ".mock this is a test",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "wordchain",
+      "description": "Start a word chain game",
+      "usage": ".wordchain",
+      "example": ".wordchain",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "hangman",
+      "description": "Play hangman",
+      "usage": ".hangman",
+      "example": ".hangman",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "unscramble",
+      "description": "Unscramble a word",
+      "usage": ".unscramble",
+      "example": ".unscramble",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "choose",
+      "description": "Let the bot choose between options",
+      "usage": ".choose [option1,option2,...]",
+      "example": ".choose pizza,burger,sushi",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "ascii",
+      "description": "Convert text to ASCII art",
+      "usage": ".ascii [text]",
+      "example": ".ascii Cool",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "pickupline",
+      "description": "Get a random pickup line",
+      "usage": ".pickupline",
+      "example": ".pickupline",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "joke",
+      "description": "Get a random joke",
+      "usage": ".joke",
+      "example": ".joke",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "wouldyourather",
+      "description": "Get a would you rather question",
+      "usage": ".wyr",
+      "example": ".wyr",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "neverhaveiever",
+      "description": "Get a never have I ever question",
+      "usage": ".nhie",
+      "example": ".nhie",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "truthordare",
+      "description": "Get a truth or dare question",
+      "usage": ".tod [truth|dare]",
+      "example": ".tod truth",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "flip",
+      "description": "Flip given text upside down",
+      "usage": ".flip [text]",
+      "example": ".flip hello world",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "zalgo",
+      "description": "Convert text to zalgo",
+      "usage": ".zalgo [text]",
+      "example": ".zalgo spooky",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "compliment",
+      "description": "Get a random compliment",
+      "usage": ".compliment",
+      "example": ".compliment",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "roast",
+      "description": "Get a random roast",
+      "usage": ".roast",
+      "example": ".roast",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "rate",
+      "description": "Rate something out of 10",
+      "usage": ".rate [thing]",
+      "example": ".rate my coding skills",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "ship",
+      "description": "Ship two things/people together",
+      "usage": ".ship [name1] [name2]",
+      "example": ".ship Alex Emma",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "vibe",
+      "description": "Check someone's vibe",
+      "usage": ".vibe [name]",
+      "example": ".vibe @user",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "dadjoke",
+      "description": "Get a random dad joke",
+      "usage": ".dadjoke",
+      "example": ".dadjoke",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "rockpaperscissors",
+      "description": "Play rock paper scissors with the bot",
+      "usage": ".rps <rock|paper|scissors>",
+      "example": ".rps rock",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "coinflip",
+      "description": "Flip a coin",
+      "usage": ".coinflip",
+      "example": ".coinflip",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "tictactoe",
+      "description": "Play Tic-tac-toe against the bot",
+      "usage": ".tictactoe [position]",
+      "example": ".tictactoe 5",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "hangman",
+      "description": "Play Hangman word guessing game",
+      "usage": ".hangman [letter]",
+      "example": ".hangman a",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "wordle",
+      "description": "Play Wordle word guessing game",
+      "usage": ".wordle [word|hint]",
+      "example": ".wordle start",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "quiz",
+      "description": "Play an educational quiz game",
+      "usage": ".quiz [category]",
+      "example": ".quiz coding",
+      "cooldown": 10,
+      "permissions": ["user"]
+    },
+    {
+      "name": "trivia",
+      "description": "Play trivia in various categories",
+      "usage": ".trivia [category]",
+      "example": ".trivia tech",
+      "cooldown": 10,
+      "permissions": ["user"]
+    },
+    {
+      "name": "rps",
+      "description": "Play Rock Paper Scissors against the bot",
+      "usage": ".rps [choice]",
+      "example": ".rps rock",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "slot",
+      "description": "Play the slot machine game",
+      "usage": ".slot",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "roll",
+      "description": "Roll a dice with specified sides",
+      "usage": ".roll [sides]",
+      "example": ".roll 20",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "riddle",
+      "description": "Get a random riddle",
+      "usage": ".riddle",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "reveal",
+      "description": "Reveal the answer to the current riddle",
+      "usage": ".reveal",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "fortune",
+      "description": "Get your fortune told",
+      "usage": ".fortune",
+      "cooldown": 10,
+      "permissions": ["user"]
+    },
+    {
+      "name": "horoscope",
+      "description": "Get your daily horoscope",
+      "usage": ".horoscope [sign]",
+      "example": ".horoscope aries",
+      "cooldown": 10,
+      "permissions": ["user"]
+    },
+    {
+      "name": "fact",
+      "description": "Get a random fun fact",
+      "usage": ".fact",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "quote",
+      "description": "Get an inspirational quote",
+      "usage": ".quote",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "joke",
+      "description": "Get a random joke",
+      "usage": ".joke",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "meme",
+      "description": "Get a random meme image",
+      "usage": ".meme",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "yomama",
+      "description": "Get a random yo mama joke",
+      "usage": ".yomama",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "_8ball",
+      "description": "Ask the magic 8-ball a question",
+      "usage": "._8ball [question]",
+      "example": "._8ball Will I win the lottery?",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "choose",
+      "description": "Let the bot choose between multiple options",
+      "usage": ".choose [option1] | [option2] | [option3]...",
+      "example": ".choose pizza | burger | tacos",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "flip",
+      "description": "Flip a coin (heads or tails)",
+      "usage": ".flip",
+      "cooldown": 3,
+      "permissions": ["user"]
+    },
+    {
+      "name": "truthordare",
+      "description": "Get a random truth or dare question",
+      "usage": ".truthordare [truth|dare]",
+      "example": ".truthordare truth",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "wouldyourather",
+      "description": "Get a random 'would you rather' question",
+      "usage": ".wouldyourather",
+      "cooldown": 5,
+      "permissions": ["user"]
+    },
+    {
+      "name": "neverhaveiever",
+      "description": "Get a random 'never have I ever' statement",
+      "usage": ".neverhaveiever",
+      "cooldown": 5,
+      "permissions": ["user"]
+    }
+  ]
+}

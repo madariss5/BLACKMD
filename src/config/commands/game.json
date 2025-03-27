@@ -1,0 +1,285 @@
+{
+  "category": "game",
+  "commands": [
+    {
+      "name": "dungeon",
+      "description": "Enter the dungeon",
+      "usage": ".dungeon",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "battle",
+      "description": "Battle other players",
+      "usage": ".battle @user",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "duel",
+      "description": "Challenge to a duel",
+      "usage": ".duel @user",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "arena",
+      "description": "Enter the arena",
+      "usage": ".arena",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "blackjack",
+      "description": "Play blackjack",
+      "usage": ".blackjack [bet]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "poker",
+      "description": "Play poker",
+      "usage": ".poker [bet]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "slots",
+      "description": "Play slot machine",
+      "usage": ".slots [bet]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "roulette",
+      "description": "Play roulette",
+      "usage": ".roulette [bet]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "coinflip",
+      "description": "Flip a coin",
+      "usage": ".coinflip [bet]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "dice",
+      "description": "Roll the dice",
+      "usage": ".dice [bet]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "lottery",
+      "description": "Play lottery",
+      "usage": ".lottery [numbers]",
+      "cooldown": 86400,
+      "permissions": ["user"]
+    },
+    {
+      "name": "scratch",
+      "description": "Scratch card game",
+      "usage": ".scratch",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "race",
+      "description": "Start a race",
+      "usage": ".race [bet]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "fight",
+      "description": "Fight monsters",
+      "usage": ".fight",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "adventure",
+      "description": "Start an adventure",
+      "usage": ".adventure",
+      "cooldown": 3600,
+      "permissions": ["user"]
+    },
+    {
+      "name": "quest",
+      "description": "Start a quest",
+      "usage": ".quest",
+      "cooldown": 3600,
+      "permissions": ["user"]
+    },
+    {
+      "name": "minigame",
+      "description": "Play minigames",
+      "usage": ".minigame [game]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "challenge",
+      "description": "Create a challenge",
+      "usage": ".challenge @user [type]",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "tournament",
+      "description": "Join tournament",
+      "usage": ".tournament [action]",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "pvp",
+      "description": "PvP combat",
+      "usage": ".pvp @user",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "boss",
+      "description": "Fight boss",
+      "usage": ".boss",
+      "cooldown": 3600,
+      "permissions": ["user"]
+    },
+    {
+      "name": "raid",
+      "description": "Start a raid",
+      "usage": ".raid",
+      "cooldown": 3600,
+      "permissions": ["user"]
+    },
+    {
+      "name": "tower",
+      "description": "Climb the tower",
+      "usage": ".tower",
+      "cooldown": 3600,
+      "permissions": ["user"]
+    },
+    {
+      "name": "maze",
+      "description": "Navigate the maze",
+      "usage": ".maze",
+      "cooldown": 300,
+      "permissions": ["user"]
+    },
+    {
+      "name": "trivia",
+      "description": "Play trivia",
+      "usage": ".trivia",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "wordchain",
+      "description": "Play word chain",
+      "usage": ".wordchain",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "memory",
+      "description": "Memory game",
+      "usage": ".memory",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "hangman",
+      "description": "Play hangman",
+      "usage": ".hangman",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "quiz",
+      "description": "Take a quiz",
+      "usage": ".quiz [category]",
+      "cooldown": 30,
+      "permissions": ["user"]
+    },
+    {
+      "name": "bingo",
+      "description": "Play bingo",
+      "usage": ".bingo",
+      "cooldown": 30,
+      "permissions": ["user"]
+    }
+  ]
+},
+{
+  "category": "user",
+  "commands": [
+    {"name": "placeholder1", "description": "Placeholder command", "usage": ".placeholder1", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder2", "description": "Placeholder command", "usage": ".placeholder2", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder3", "description": "Placeholder command", "usage": ".placeholder3", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder4", "description": "Placeholder command", "usage": ".placeholder4", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder5", "description": "Placeholder command", "usage": ".placeholder5", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder6", "description": "Placeholder command", "usage": ".placeholder6", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder7", "description": "Placeholder command", "usage": ".placeholder7", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder8", "description": "Placeholder command", "usage": ".placeholder8", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder9", "description": "Placeholder command", "usage": ".placeholder9", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder10", "description": "Placeholder command", "usage": ".placeholder10", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder11", "description": "Placeholder command", "usage": ".placeholder11", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder12", "description": "Placeholder command", "usage": ".placeholder12", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder13", "description": "Placeholder command", "usage": ".placeholder13", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder14", "description": "Placeholder command", "usage": ".placeholder14", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder15", "description": "Placeholder command", "usage": ".placeholder15", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder16", "description": "Placeholder command", "usage": ".placeholder16", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder17", "description": "Placeholder command", "usage": ".placeholder17", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder18", "description": "Placeholder command", "usage": ".placeholder18", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder19", "description": "Placeholder command", "usage": ".placeholder19", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder20", "description": "Placeholder command", "usage": ".placeholder20", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder21", "description": "Placeholder command", "usage": ".placeholder21", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder22", "description": "Placeholder command", "usage": ".placeholder22", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder23", "description": "Placeholder command", "usage": ".placeholder23", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder24", "description": "Placeholder command", "usage": ".placeholder24", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder25", "description": "Placeholder command", "usage": ".placeholder25", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder26", "description": "Placeholder command", "usage": ".placeholder26", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder27", "description": "Placeholder command", "usage": ".placeholder27", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder28", "description": "Placeholder command", "usage": ".placeholder28", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder29", "description": "Placeholder command", "usage": ".placeholder29", "cooldown": 0, "permissions": ["user"]},
+    {"name": "placeholder30", "description": "Placeholder command", "usage": ".placeholder30", "cooldown": 0, "permissions": ["user"]}
+  ]
+},
+{
+  "category": "group",
+  "commands": [
+    {"name": "placeholder1", "description": "Placeholder command", "usage": ".placeholder1", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder2", "description": "Placeholder command", "usage": ".placeholder2", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder3", "description": "Placeholder command", "usage": ".placeholder3", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder4", "description": "Placeholder command", "usage": ".placeholder4", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder5", "description": "Placeholder command", "usage": ".placeholder5", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder6", "description": "Placeholder command", "usage": ".placeholder6", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder7", "description": "Placeholder command", "usage": ".placeholder7", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder8", "description": "Placeholder command", "usage": ".placeholder8", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder9", "description": "Placeholder command", "usage": ".placeholder9", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder10", "description": "Placeholder command", "usage": ".placeholder10", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder11", "description": "Placeholder command", "usage": ".placeholder11", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder12", "description": "Placeholder command", "usage": ".placeholder12", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder13", "description": "Placeholder command", "usage": ".placeholder13", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder14", "description": "Placeholder command", "usage": ".placeholder14", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder15", "description": "Placeholder command", "usage": ".placeholder15", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder16", "description": "Placeholder command", "usage": ".placeholder16", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder17", "description": "Placeholder command", "usage": ".placeholder17", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder18", "description": "Placeholder command", "usage": ".placeholder18", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder19", "description": "Placeholder command", "usage": ".placeholder19", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder20", "description": "Placeholder command", "usage": ".placeholder20", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder21", "description": "Placeholder command", "usage": ".placeholder21", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder22", "description": "Placeholder command", "usage": ".placeholder22", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder23", "description": "Placeholder command", "usage": ".placeholder23", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder24", "description": "Placeholder command", "usage": ".placeholder24", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder25", "description": "Placeholder command", "usage": ".placeholder25", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder26", "description": "Placeholder command", "usage": ".placeholder26", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder27", "description": "Placeholder command", "usage": ".placeholder27", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder28", "description": "Placeholder command", "usage": ".placeholder28", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder29", "description": "Placeholder command", "usage": ".placeholder29", "cooldown": 0, "permissions": ["admin"]},
+    {"name": "placeholder30", "description": "Placeholder command", "usage": ".placeholder30", "cooldown": 0, "permissions": ["admin"]}
+  ]
+}
