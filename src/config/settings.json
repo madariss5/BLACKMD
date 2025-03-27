@@ -1,0 +1,25 @@
+{
+  "bot": {
+    "commands": {
+      "hello": {
+        "en": "Hello!",
+        "de": "Hallo!"
+      },
+      "goodbye": {
+        "en": "Goodbye!",
+        "de": "Auf Wiedersehen!"
+      }
+    },
+    "messages": {
+      "greeting": {
+        "en": "Welcome to the bot!",
+        "de": "Willkommen beim Bot!"
+      },
+      "error": {
+        "en": "An error occurred.",
+        "de": "Ein Fehler ist aufgetreten."
+      }
+    },
+    "defaultLanguage": "de"
+  }
+}
