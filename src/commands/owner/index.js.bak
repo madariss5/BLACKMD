@@ -1,0 +1,119 @@
+/**
+ * Owner Commands Loader
+ * Loads all command files from the owner directory
+ */
+const fs = require('fs');
+const path = require('path');
+const logger = require('../../utils/logger');
+
+// Storage for all commands from individual files
+const commands = {};
+
+// Track initialization of sub-modules
+let initialized = false;
+
+/**
+ * Load all command files in the owner directory
+ */
+function loadCommands() {
+    const commandsDir = __dirname;
+    
+    try {
+        // Get all JS files except this index.js
+        const commandFiles = fs.readdirSync(commandsDir)
+            .filter(file => file.endsWith('.js') && file !== 'index.js');
+        
+        logger.info(`Found ${commandFiles.length} owner command files`);
+        
+        // Load each command file
+        for (const file of commandFiles) {
+            try {
+                const filePath = path.join(commandsDir, file);
+                const commandModule = require(filePath);
+                
+                // Skip if not a proper command module
+                if (!commandModule || !commandModule.commands) {
+                    logger.warn(`Skipping ${file} - not a valid command module`);
+                    continue;
+                }
+                
+                // Add all commands from this module to our commands object
+                for (const [cmdName, cmdFunc] of Object.entries(commandModule.commands)) {
+                    if (typeof cmdFunc === 'function') {
+                        commands[cmdName] = cmdFunc;
+                        logger.info(`Loaded owner command: ${cmdName} from ${file}`);
+                    }
+                }
+            } catch (err) {
+                logger.error(`Failed to load owner command file ${file}:`, err);
+            }
+        }
+        
+        logger.info(`Loaded ${Object.keys(commands).length} total owner commands`);
+        return true;
+    } catch (err) {
+        logger.error('Error loading owner commands:', err);
+        return false;
+    }
+}
+
+// Load commands on module initialization
+loadCommands();
+
+/**
+ * Initialize all loaded owner command modules
+ * @param {Object} sock - WhatsApp socket connection
+ */
+async function init(sock) {
+    try {
+        // If already initialized, skip
+        if (initialized) {
+            logger.info('Owner commands already initialized');
+            return true;
+        }
+        
+        logger.info('Initializing owner commands...');
+        
+        // Get all JS files except this index.js
+        const commandsDir = __dirname;
+        const commandFiles = fs.readdirSync(commandsDir)
+            .filter(file => file.endsWith('.js') && file !== 'index.js');
+        
+        // Initialize each command module
+        for (const file of commandFiles) {
+            try {
+                const filePath = path.join(commandsDir, file);
+                const commandModule = require(filePath);
+                
+                // Skip if no init function
+                if (!commandModule || typeof commandModule.init !== 'function') {
+                    continue;
+                }
+                
+                // Initialize the module
+                const success = await commandModule.init(sock);
+                if (success) {
+                    logger.info(`Successfully initialized owner command file: ${file}`);
+                } else {
+                    logger.warn(`Failed to initialize owner command file: ${file}`);
+                }
+            } catch (err) {
+                logger.error(`Error initializing owner command file ${file}:`, err);
+            }
+        }
+        
+        initialized = true;
+        logger.info('All owner commands initialized successfully');
+        return true;
+    } catch (err) {
+        logger.error('Failed to initialize owner commands:', err);
+        return false;
+    }
+}
+
+// Export commands and initialization function
+module.exports = {
+    commands,
+    init,
+    category: 'owner'
+};
