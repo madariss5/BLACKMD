@@ -18,12 +18,9 @@ const { checkMentionsForAfkUsers } = require('./utils/afkMentionHandler');
 const { isHeroku, isRailway, isCloudPlatform, initializeAuthFromEnv } = require('./utils/herokuHelper');
 const { startHerokuMonitoring, getHealthStatus } = require('./utils/herokuMonitor');
 const { setupMessageLogger } = require('./utils/messageLogger');
-const { initializeHerokuConsole } = require('./utils/herokuConsole');
 const { messageDebugger } = require('./debug-messages');
 const cron = require('node-cron');
 const { execSync } = require('child_process');
-const { loadBannedUsers } = require('./utils/userDatabase');
-const { startMinimalServer } = require('./utils/quickStartServer');
 
 // Create required directories
 function ensureDirectoriesExist() {
@@ -81,23 +78,23 @@ async function setupMessageHandler(sock) {
                 if (message.key.fromMe) {
                     logger.info('📤 RECEIVED MESSAGE FROM BOT - fromMe=true');
                     console.log("📤 RECEIVED MESSAGE FROM BOT - fromMe=true");
-
+                    
                     // Track with message debugger for enhanced visibility
                     try {
                         messageDebugger.trackIncomingMessage(message, 'processing_bot_message');
                     } catch (debugError) {
                         logger.error(`Error in message debugger: ${debugError.message}`);
                     }
-
+                    
                     // Extract text content for improved visibility
                     const botMsgText = message.message?.conversation || 
                                      message.message?.extendedTextMessage?.text || 
                                      'No text content';
-
+                                     
                     console.log("\n=================================================================");
                     console.log(`🤖 BOT MESSAGE CONTENT: "${botMsgText}"`);
                     console.log("=================================================================\n");
-
+                    
                     // Always process bot's messages when flag is enabled
                     if (processOwnMessages) {
                         logger.info('✅ PROCESSING BOT MESSAGE - processOwnMessages=true');
@@ -147,7 +144,7 @@ async function setupMessageHandler(sock) {
                     const [command, ...args] = msgText.slice(prefix.length).trim().split(' ');
 
                     logger.info(`Parsed command: ${command}, args: ${JSON.stringify(args)}`);
-
+                    
                     // Log command details prominently
                     console.log("\n=================================================================");
                     console.log(`📋 PROCESSING COMMAND: "${command}" with args: ${JSON.stringify(args)}`);
@@ -162,56 +159,6 @@ async function setupMessageHandler(sock) {
                             text: 'Please provide a command after the prefix.' 
                         });
                         return;
-                    }
-
-                    // Check if user is banned (skip this check for owner commands)
-                    if (!message.key.fromMe) {
-                        // Extract user's JID for ban check
-                        let userJid = message.key.remoteJid;
-
-                        // For group messages, use the participant field
-                        if (userJid.endsWith('@g.us') && message.key.participant) {
-                            userJid = message.key.participant;
-                        }
-
-                        // Get user number for ban check
-                        const userNumber = userJid.split('@')[0].split(':')[0];
-                        const normalizedJid = `${userNumber}@s.whatsapp.net`;
-
-                        logger.info(`Checking if user is banned: ${userNumber} (${normalizedJid})`);
-
-                        // Check against global banned users
-                        if (global.bannedUsers && (
-                            global.bannedUsers.has(normalizedJid) || 
-                            global.bannedUsers.has(userNumber)
-                        )) {
-                            logger.info(`User ${userNumber} is banned. Rejecting command.`);
-
-                            // Get ban reason if available
-                            let banReason = "No reason provided";
-
-                            if (global.bannedUsersData && (
-                                global.bannedUsersData.has(normalizedJid) || 
-                                global.bannedUsersData.has(userNumber)
-                            )) {
-                                const banData = global.bannedUsersData.get(normalizedJid) || 
-                                               global.bannedUsersData.get(userNumber);
-                                if (banData && banData.reason) {
-                                    banReason = banData.reason;
-                                }
-                            }
-
-                            // Special override for owner commands: ban, unban, banlist
-                            const ownerCommands = ['ban', 'unban', 'banlist', 'setowner'];
-                            if (!ownerCommands.includes(command.toLowerCase())) {
-                                await sock.sendMessage(jid, { 
-                                    text: `🚫 *Access Denied*\n\nYou've been banned from using this bot.\n\n*Reason:* ${banReason}\n\nContact the bot owner to appeal.` 
-                                }, { quoted: message });
-                                return;
-                            } else {
-                                logger.info(`Allowing banned user to use owner command: ${command}`);
-                            }
-                        }
                     }
 
                     // Skip sending command acknowledgment
@@ -338,20 +285,18 @@ async function initializeLanguageSettings() {
 async function startBot() {
     // Define sock at the top level so it's accessible throughout the function
     let sock = null;
-
+    
     try {
         logger.info('Starting BLACKSKY-MD WhatsApp Bot...');
-        
-        // Start a minimal HTTP server immediately to satisfy the port requirement
-        // This ensures the port is opened quickly to satisfy Replit's requirements
-        const PORT = process.env.PORT || 5000;
-        startMinimalServer(PORT);
-        logger.info(`Quick-start HTTP server started on port ${PORT}`);
-        
+
         // Load our simplified message handler
         const setupSimplifiedHandler = require('./simplified-handler');
         logger.info('Loaded simplified message handler');
 
+        // Start HTTP server immediately for better platform detection
+        setupHttpServer();
+        logger.info('HTTP server started early in the boot process');
+        
         // Setup backup cleanup to prevent excessive backup files
         setupBackupCleanup();
         logger.info('Backup cleanup scheduler initialized');
@@ -363,14 +308,6 @@ async function startBot() {
         if (isCloudPlatform()) {
             if (isHeroku()) {
                 logger.info('Running on Heroku platform');
-                
-                // Initialize Heroku console helper for enhanced logging and monitoring
-                initializeHerokuConsole();
-                logger.info('Heroku console helper initialized for enhanced debugging');
-                
-                // Start Heroku-specific monitoring
-                startHerokuMonitoring({ getConnectionStatus: () => sock?.user ? 'connected' : 'disconnected' });
-                logger.info('Heroku monitoring services started');
             } else if (isRailway()) {
                 logger.info('Running on Railway platform');
             } else {
@@ -389,17 +326,6 @@ async function startBot() {
         // Ensure required directories exist
         ensureDirectoriesExist();
 
-        // Load banned users into memory
-        try {
-            logger.info('Loading banned users into memory...');
-            await loadBannedUsers();
-            logger.info(`Loaded ${global.bannedUsers ? global.bannedUsers.size : 0} banned users into memory`);
-        } catch (err) {
-            logger.error(`Error loading banned users: ${err.message}`);
-            // Initialize empty set if loading fails
-            global.bannedUsers = new Set();
-        }
-
         // Run startup verification checks
         logger.info('Performing startup verification checks...');
         const verificationResults = await verifyStartupRequirements();
@@ -415,15 +341,15 @@ async function startBot() {
         // Connect to WhatsApp 
         let connectionAttempts = 0;
         const maxConnectionAttempts = 3;
-
+        
         while (!sock && connectionAttempts < maxConnectionAttempts) {
             connectionAttempts++;
             logger.info(`Connection attempt ${connectionAttempts}/${maxConnectionAttempts}...`);
-
+            
             try {
                 // Attempt connection
                 sock = await connectionManager.connect();
-
+                
                 if (sock) {
                     logger.info('Successfully connected to WhatsApp');
                     break;
@@ -442,21 +368,21 @@ async function startBot() {
                 }
             }
         }
-
+        
         if (!sock) {
             logger.error(`Failed to create WhatsApp connection after ${maxConnectionAttempts} attempts`);
             return;
         }
-
+        
         // Set up message handler immediately
         logger.info('Setting up message handler...');
         await setupMessageHandler(sock);
-
+        
         // Set up enhanced message logging
         const { setupMessageLogger } = require('./utils/messageLogger');
         setupMessageLogger(sock);
         logger.info('Enhanced message logging activated');
-
+        
         // Set up message debugger to diagnose message processing issues
         try {
             const { setupMessageDebugger } = require('./debug-messages');
@@ -466,7 +392,7 @@ async function startBot() {
             logger.error(`Error setting up message debugger: ${debuggerError.message}`);
             logger.info('Continuing without message debugger');
         }
-
+        
         // Set up connection event handler for QR code and connection status
         connectionManager.onConnectionUpdate(async (update) => {
             const { connection, qr, lastDisconnect } = update;
@@ -478,11 +404,10 @@ async function startBot() {
             }
 
             if (connection === 'open') {
-                logger.success('WhatsApp connection established successfully');
+                logger.success('Connected to WhatsApp');
 
-                // Backup and send creds after successful connection
-                const { backupCredsFile } = require('./utils/sessionUtils');
-                await backupCredsFile(sock);
+                // Create a backup of the session
+                await sessionManager.backupSession();
 
                 setTimeout(async () => {
                     try {
@@ -531,44 +456,12 @@ async function startBot() {
         // Continue execution to allow clean up and prevent hard crash
     }
 
-    // Set up automatic reconnection with enhanced session conflict handling
+    // Set up automatic reconnection
     connectionManager.onConnectionUpdate((update) => {
         const { connection, lastDisconnect } = update;
 
         if (connection === 'close') {
-            const statusCode = lastDisconnect?.error?.output?.statusCode;
-            const reason = lastDisconnect?.error?.message || 'Unknown';
-            
-            logger.warn(`Connection closed. Status code: ${statusCode}, Reason: ${reason}`);
-            
-            // Check for session conflicts (replaced, logged out elsewhere)
-            if (statusCode === 440 || reason.includes('conflict') || reason.includes('replaced')) {
-                logger.warn('Session conflict detected (WhatsApp logged in elsewhere)');
-                
-                if (isHeroku()) {
-                    logger.info('Running special session repair for Heroku deployment...');
-                    // Create special session backup for troubleshooting
-                    sessionManager.createSpecialBackup('session_repair');
-                    
-                    // Set longer reconnection delay for conflict issues
-                    logger.info('Scheduling reconnection after session issue in 10 seconds...');
-                    setTimeout(async () => {
-                        try {
-                            const status = connectionManager.getStatus();
-                            if (!status.isConnected && !status.isConnecting) {
-                                logger.info('Attempting reconnection after session conflict...');
-                                await connectionManager.connect();
-                            }
-                        } catch (error) {
-                            logger.error('Error during conflict reconnection:', error);
-                        }
-                    }, 10000); // Wait 10 seconds for conflict issues
-                    
-                    return;
-                }
-            }
-            
-            // Standard reconnection for other disconnection reasons
+            // Schedule reconnection if needed
             setTimeout(async () => {
                 const status = connectionManager.getStatus();
                 if (!status.isConnected && !status.isConnecting) {
@@ -664,17 +557,17 @@ function setupGracefulShutdown() {
  */
 function setupBackupCleanup() {
     logger.info('Setting up aggressive backup cleanup (runs hourly)');
-
+    
     try {
         // Schedule backup cleanup to run every hour
         cron.schedule('0 * * * *', () => {
             try {
                 logger.info('Running hourly backup cleanup...');
-
+                
                 // Run the cleanup script
                 const output = execSync('node auto-cleanup-backups.js').toString();
                 logger.info('Backup cleanup completed successfully');
-
+                
                 if (process.env.DEBUG_MODE === 'true') {
                     logger.debug(output);
                 }
@@ -682,7 +575,7 @@ function setupBackupCleanup() {
                 logger.error('Error during hourly backup cleanup:', error);
             }
         });
-
+        
         // Also run the cleanup immediately
         setTimeout(() => {
             try {
@@ -693,48 +586,37 @@ function setupBackupCleanup() {
                 logger.error('Error during initial backup cleanup:', error);
             }
         }, 60 * 1000); // Run 1 minute after startup
-
+        
         logger.success('Backup cleanup scheduler initialized');
     } catch (error) {
         logger.error('Failed to set up backup cleanup:', error);
     }
 }
-
-// Setup HTTP server for health checks and API endpoints
-function setupHttpServer() {
-    // Get references to the server already started by quickStartServer
-    const { getServerReferences } = require('./utils/quickStartServer');
-    const { app, server } = getServerReferences();
-    const PORT = process.env.PORT || 5000;
-    
-    // Skip if no server reference (should never happen but just in case)
-    if (!app) {
-        logger.warn('No HTTP server reference found, creating new one');
-        const express = require('express');
-        const newApp = express();
-        newApp.listen(PORT, '0.0.0.0', () => {
-            logger.info(`HTTP server started on port ${PORT}`);
+            } catch (error) {
+                logger.error('Error during hourly backup cleanup:', error);
+            }
         });
-        return; // Exit early since we can't add routes without the app
-    } else {
-        logger.info('Enhancing existing HTTP server with additional routes');
+        
+        // Also run the cleanup immediately
+        setTimeout(() => {
+            try {
+                logger.info('Running initial backup cleanup...');
+                const output = execSync('node auto-cleanup-backups.js').toString();
+                logger.info('Initial backup cleanup completed');
+            } catch (error) {
+                logger.error('Error during initial backup cleanup:', error);
+            }
+        }, 60 * 1000); // Run 1 minute after startup
+        
+        logger.success('Backup cleanup scheduler initialized');
+    } catch (error) {
+        logger.error('Failed to set up backup cleanup:', error);
     }
-
-
-    // Add health check endpoint
+}
     app.get('/_health', (req, res) => {
         // Simple minimal response for Railway's health checker
         res.status(200).json({ status: 'ok', timestamp: Date.now() });
     });
-    
-    // Import and use the Heroku console helper
-    try {
-        const consoleRouter = require('../heroku-console-helper');
-        app.use('/console', consoleRouter);
-        logger.info('Heroku console interface enabled at /console');
-    } catch (error) {
-        logger.warn('Heroku console helper not available:', error.message);
-    }
 
     // Add Railway-specific status route
     app.get('/railway', (req, res) => {
@@ -850,7 +732,7 @@ function setupHttpServer() {
         } else {
             res.setHeader('Content-Type', 'text/html');
             res.write('<html><head><title>WhatsApp Connecting</title>');
-            res.write('<meta name="viewportcontent="width=device-width, initial-scale=1.0">');
+            res.write('<meta name="viewport" content="width=device-width, initial-scale=1.0">');
             res.write('<meta http-equiv="refresh" content="5">');
             res.write('<style>body{font-family:Arial,sans-serif;text-align:center;margin-top:50px;background-color:#f5f5f5;}');
             res.write('h1{color:#075e54;}');
@@ -870,8 +752,10 @@ function setupHttpServer() {
         }
     });
 
-    // Don't start a new server since we're using the one from quickStartServer
-    logger.info('Enhanced HTTP server with additional routes');
+    // Start server and bind to 0.0.0.0 to make it accessible from outside
+    app.listen(PORT, '0.0.0.0', () => {
+        logger.info(`HTTP server started on port ${PORT} (http://0.0.0.0:${PORT})`);
+    });
 
     // Log server activity periodically to prevent dyno sleeping
     setInterval(() => {
